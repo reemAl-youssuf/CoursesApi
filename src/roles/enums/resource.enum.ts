@@ -1,6 +1,7 @@
 export enum Resource {
     courses = 'courses',
-    users = 'users',
     lessons = 'lessons',
-    enrollments = 'enrollments'
+    enrollments = 'enrollments',
+    attachments = 'attachment',
+    roles = 'roles'
 }

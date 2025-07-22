@@ -8,24 +8,23 @@ import { Action } from 'src/roles/enums/action.enums';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
 
+@UseGuards(AuthenticationGuard, AuthorizationGuard)
 @Controller('lessons')
 export class LessonsController {
   constructor(private readonly lessonsService: LessonsService) {}
 
 
-  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  
   @permissions([{
     resource:Resource.lessons,
     actions:[Action.create]
   }])
-  
   @Post()
     async creatLesson(@Body() lesson: LessonDto){
       return this.lessonsService.CreateLesson(lesson)
     }
   
-    @UseGuards(AuthenticationGuard, AuthorizationGuard)
-    @permissions([{
+  @permissions([{
       resource:Resource.lessons,
       actions:[Action.read]
     }])
@@ -34,30 +33,41 @@ export class LessonsController {
     async getAllLessons(){
       return this.lessonsService.GetAllLessons()
     }
-  
+
+    @permissions([{
+      resource:Resource.lessons,
+      actions:[Action.read]
+    }])
     @Get(':id')
     async getLesson(@Param('id') id: string){
       return this.lessonsService.GetLesson(id)
     }
-    
+
+    @permissions([{
+      resource:Resource.lessons,
+      actions:[Action.update]
+    }])
     @Patch(':id')
     async updateLesson(@Param('id') id: string, @Body() updateLesson: UpdateLessonDto){
       return this.lessonsService.UpdateLesson(id, updateLesson)
     }
   
-    @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @permissions([{
       resource:Resource.lessons,
       actions:[Action.delete]
     }])
-    
+
     @Delete(':id')
     async deleteLesson(@Param('id') id: string){
       return this.lessonsService.DeleteLesson(id)
     }
 
-     @Get('course/:courseId')
-     async getLessonsByCourse(@Param('courseId') courseId: string) {
+    @permissions([{
+      resource:Resource.lessons,
+      actions:[Action.read]
+    }])
+    @Get('course/:courseId')
+    async getLessonsByCourse(@Param('courseId') courseId: string) {
       return this.lessonsService.getLessonsByCourse(courseId);
   }
 }

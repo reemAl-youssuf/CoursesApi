@@ -1,12 +1,25 @@
-import { Controller, Get, Param, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Post, Res, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AttachmentService } from './attachment.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from './multer.config';
+import { AuthenticationGuard } from 'src/guards/authentication.guard';
+import { AuthorizationGuard } from 'src/guards/authorization.guard';
+import { permissions } from 'src/decorators/permissions.decorator';
+import { Resource } from 'src/roles/enums/resource.enum';
+import { Action } from 'src/roles/enums/action.enums';
+
+@UseGuards(AuthenticationGuard, AuthorizationGuard)
 
 @Controller('attachment')
 export class AttachmentController {
   constructor(private readonly attachmentService: AttachmentService) {}
 
+  @permissions([
+  {
+    resource:Resource.attachments,
+    actions:[Action.create]
+  }
+  ])
   @Post(':entityType/:entityId')
   @UseInterceptors(FilesInterceptor('files',20, multerConfig))
   async UploadFiles(
@@ -18,7 +31,12 @@ export class AttachmentController {
     return this.attachmentService.UploadAttachment(files, entityType, entityId)
   }
 
-
+  @permissions([
+  {
+    resource:Resource.attachments,
+    actions:[Action.read]
+  }
+  ])
   @Get(':entityType/:entityId')
   async getAttachments(
     @Param('entityType') entityType:string,

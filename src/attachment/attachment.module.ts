@@ -8,6 +8,7 @@ import { Attachment, AttachmentSchema } from './schemas/attachment.schema';
 import { multerConfig } from './multer.config';
 import { CoursesModule } from 'src/courses/courses.module';
 import { LessonsModule } from 'src/lessons/lessons.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 
 @Module({
@@ -23,7 +24,8 @@ import { LessonsModule } from 'src/lessons/lessons.module';
       }
     ]),
     CoursesModule,
-    LessonsModule
+    LessonsModule,
+    AuthModule
   ],
   controllers: [AttachmentController],
   providers: [AttachmentService],

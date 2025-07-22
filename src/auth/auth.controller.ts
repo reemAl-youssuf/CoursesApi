@@ -27,12 +27,6 @@ export class AuthController {
     return this.authService.refreshTokens(refreshTokenDto.refreshToken)
   }
 
-  @UseGuards(AuthenticationGuard)
-  @Get()
-      someProtectedRoute(@Req() req) {
-          return { message: 'Accessed Resource', userId: req.userId };
-    }
-
 
   @UseGuards(AuthenticationGuard)
   @Put('change-password')

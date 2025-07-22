@@ -47,7 +47,7 @@ export class AuthorizationGuard implements CanActivate{
             }
             }
             catch(e){
-                throw new ForbiddenException("aa")
+                throw new ForbiddenException("Access denied: You do not have permission to access this resource.")
         }
       
         return true
